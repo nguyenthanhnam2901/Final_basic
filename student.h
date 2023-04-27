@@ -1,104 +1,59 @@
-typedef struct 
+bool isValidNumberOfStudents(int n) 
 {
-    int day, month, year;
-} birthdate;
-
-typedef struct
-{
-    char lastName[20];
-    char firstName[20];
-} name  ;
-
-typedef struct
-{
-    //student's id
-    char id[20];
-    
-    //student's full name
-    name fullName;
-    
-    //student birthdate
-    birthdate birthDay;
-
-    //overall grades of three subjects: Algebra, Calculus, Basic Programming respectively
-    float grade[3];
-
-    //function to calculate the gpa
-} student;
-
-//funtion to calculate the gpa
-float gpa(student thisStudent) {
-    return (thisStudent.grade[0] + thisStudent.grade[1] + thisStudent.grade[2])/3;
+    if (n < 0 || n > 1000) 
+    {
+        return false;
+    }
+    return true;
 }
 
-//function to compare the birhtdate of 2 student
-bool isYounger(student student_1, student student_2) {
-    
-    //comparing birth year
-    if(student_1.birthDay.year < student_2.birthDay.year) {
-        return true;
-    }
-    
-    //comparing birth month
-    if(student_1.birthDay.month < student_2.birthDay.month) {
-        return true;
-    }
-    
-    //comparing birth date
-    if(student_1.birthDay.day < student_2.birthDay.day) {
-        return true;
-    }
 
-    //if the 2 students have the same birthdate then no one is younger
+bool isDuplicateID(student students[], int n, char id[]) {
+    for (int i = 1; i < n; ++i) {
+        if (strcmp(students[i].id, id) == 0) {
+            return true;
+        }
+    }
     return false;
 }
 
-// function to check if 2 students have the same birthdate
-bool isSameBirthdate(student student_1, student student_2) {
-    return (student_1.birthDay.day == student_2.birthDay.day &&
-            student_1.birthDay.month == student_2.birthDay.month &&
-            student_1.birthDay.year == student_2.birthDay.year);
-}
-
-//finding the youngest student
-student findYoungest(student *students, int numberOfStudent) {
-    
-    student youngestStudent = {
-                                "", //id
-                                {"",""}, //name
-                                {32,13,9999}, //birthdate
-                                {0.0,0.0,0.0} //grade
-                            };
-
-    for(int i = 1; i <= numberOfStudent; ++i) {
-        if(isYounger(students[i], youngestStudent)) {
-            youngestStudent = students[i];
+bool isValidGrade(float grade[]) {
+    for (int i = 0; i < 3; ++i) {
+        if (grade[i] < 0 || grade[i] > 20) {
+            return false;
         }
     }
-
-    return youngestStudent;
+    return true;
 }
 
-//finding the oldest student
-student findOldest(student *students, int numberOfStudent) {
-    student oldestStudent = {
-                                "", //id
-                                {"",""}, //name
-                                {0,0,0}, //birthdate
-                                {0.0,0.0,0.0} //grade
-                            };
-
-    for(int i = 1; i <= numberOfStudent; ++i) {
-        if(isYounger(oldestStudent, students[i])) {
-            oldestStudent = students[i];
-        }
+bool isValidBirthdate(int day, int month, int year) {
+    int daymax;
+    switch (month) {
+        case 1:
+        case 3:
+        case 5:
+        case 7:
+        case 8:
+        case 10:
+        case 12:
+            daymax = 31;
+            break;
+        case 4:
+        case 6:
+        case 9:
+        case 11:
+            daymax = 30;
+            break;
+        case 2:
+            if ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0) {
+                daymax = 29;
+            } else {
+                daymax = 28;
+            }
+            break;
     }
-
-    return oldestStudent;
+    if (day < 1 || day > daymax || month < 1 || month > 12 || year < 1) {
+        return false;
+    }
+    return true;
 }
-
-//finding the students with highest GPA 
-
-//finding the students with GPA student
-
-//finding the students with highest BP grade
